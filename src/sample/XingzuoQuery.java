@@ -1,12 +1,10 @@
 package sample;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,6 +27,9 @@ public class XingzuoQuery extends Application {
 	private Stage stage;
 	private DatePicker checkInDatePicker;
 	private final String dtf = "yyyy-MM-dd";
+	Label desc = new Label();
+	ImageView imageView = new ImageView();
+	Image image;
 
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.US);
@@ -44,6 +45,7 @@ public class XingzuoQuery extends Application {
 	}
 
 	public GridPane initUI() {
+		//DatePicker
 		VBox vBox = new VBox(20);
 		vBox.setStyle("-fx-padding: 10;");
 		checkInDatePicker = new DatePicker(LocalDate.of(1990,01,01));
@@ -69,6 +71,8 @@ public class XingzuoQuery extends Application {
 		};
 		checkInDatePicker.setConverter(converter);
 		checkInDatePicker.setPromptText(dtf.toLowerCase());
+
+		//UI
 		Label birthday = new Label("您的生日是(选择/手动输入):");
 		Button submit = new Button();
 		submit.setText("查询");
@@ -83,11 +87,12 @@ public class XingzuoQuery extends Application {
 		hBox.setAlignment(Pos.CENTER);
 		hBox.setSpacing(10);
 		gridPane.add(hBox,0,0);
-		vBox.getChildren().addAll(gridPane);
 		birthday.requestFocus();
 
-		submit.setOnAction(event -> {
+		gridPane.add(desc,0,4);
+		gridPane.add(imageView,1,4);
 
+		submit.setOnAction(event -> {
 			GridPane showPane = new GridPane();
 			LocalDate date = checkInDatePicker.getValue();
 			String string = date.toString();
@@ -95,30 +100,20 @@ public class XingzuoQuery extends Application {
 			String[] strings = string.split("-");
 			Integer month = Integer.valueOf(strings[1]);
 			Integer day = Integer.valueOf(strings[2]);
-			showPane = showQuery(month,day);
-			showPane.setMaxWidth(500);
-			gridPane.add(showPane,0,4);
+
+			XingzuoInfo Info = new XingzuoInfo(month,day);
+//			desc = new Label();
+			desc.setText(Info.getDesc());
+			desc.setWrapText(true);
+			desc.setFont(new Font("Cambria",16));
+			image = new Image(Info.getUrl());
+//			ImageView imageView = new ImageView();
+			imageView.setFitHeight(200);
+			imageView.setFitWidth(200);
+			imageView.setImage(image);
 		});
 		gridPane.setMaxSize(450,450);
 		return gridPane;
 	}
 
-	public GridPane showQuery(Integer month,Integer day){
-		GridPane gridPane = new GridPane();
-		XingzuoInfo Info = new XingzuoInfo(month,day);
-
-		Label desc = new Label();
-		desc.setText(Info.getDesc());
-		desc.setWrapText(true);
-		desc.setFont(new Font("Cambria",16));
-		Image image = new Image(Info.getUrl());
-		ImageView imageView = new ImageView();
-		imageView.setFitHeight(200);
-		imageView.setFitWidth(200);
-		imageView.setImage(image);
-		//Image imageDecline = new Image(getClass().getResourceAsStream("not.png"));
-		gridPane.add(desc,0,0);
-		gridPane.add(imageView,1,0);
-		return gridPane;
-	}
 }
