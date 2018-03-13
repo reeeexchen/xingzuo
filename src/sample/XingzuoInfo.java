@@ -1,7 +1,6 @@
 package sample;
 
 import java.io.*;
-import java.util.logging.FileHandler;
 
 public class XingzuoInfo {
 	private int[] startDay = new int[]{120, 219, 321, 421, 521, 622, 723, 823, 923, 1024, 1123};
@@ -17,13 +16,17 @@ public class XingzuoInfo {
 		this.month = month;
 		this.day = day;
 		number = month * 100 + day;
+//		System.out.println(number);
+		boolean exist = false;
 		for (int i = 0; i < 11; i++) {
 			if (number <= endDay[i] && number >= startDay[i]) {
 				number = i + 1;
+				exist = true;
 				break;
-			} else {
-				number = 12;
 			}
+		}
+		if(!exist){
+			number = 12;
 		}
 	}
 
@@ -44,22 +47,17 @@ public class XingzuoInfo {
 	}
 
 	public String getDesc() {
-
+		StringBuilder result = new StringBuilder();
 		try {
-			String path = "/text/" + number + ".txt";
-			System.out.println(path);
-			File file = new File(path);
-			if(file.isFile() && file.exists()){
-				InputStreamReader reader = new InputStreamReader(
-						new FileInputStream(file));
-				BufferedReader bufferedReader = new BufferedReader(reader);
-				desc = "";
-				while ((desc = bufferedReader.readLine()) != null){
-					desc += desc;
-					System.out.println(desc);
-				}
-				reader.close();
+			String path = "src/text/" + number + ".txt";
+//			System.out.println(path);
+			BufferedReader br = new BufferedReader(new FileReader(path));
+			desc = null;
+			while ((desc = br.readLine()) != null){
+				result.append(desc);
 			}
+			desc = result.toString();
+//			System.out.println(desc);
 			return desc;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,7 +71,7 @@ public class XingzuoInfo {
 
 	public String getUrl() {
 		url = "/img/" + number + ".jpg";
-		System.out.println(url);
+//		System.out.println(url);
 		return url;
 	}
 

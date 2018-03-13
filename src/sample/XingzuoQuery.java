@@ -1,5 +1,6 @@
 package sample;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -7,11 +8,14 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -42,8 +46,6 @@ public class XingzuoQuery extends Application {
 	public GridPane initUI() {
 		VBox vBox = new VBox(20);
 		vBox.setStyle("-fx-padding: 10;");
-		Scene scene = new Scene(vBox, 700, 600);
-//		stage.setScene(scene);
 		checkInDatePicker = new DatePicker(LocalDate.of(1990,01,01));
 		checkInDatePicker.setShowWeekNumbers(false);
 		StringConverter converter = new StringConverter<LocalDate>() {
@@ -67,39 +69,37 @@ public class XingzuoQuery extends Application {
 		};
 		checkInDatePicker.setConverter(converter);
 		checkInDatePicker.setPromptText(dtf.toLowerCase());
+		Label birthday = new Label("您的生日是(选择/手动输入):");
+		Button submit = new Button();
+		submit.setText("查询");
 		GridPane gridPane = new GridPane();
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
-		Label birthday = new Label("您的生日是(选择/手动输入):");
-		Button submit = new Button();
-		submit.setText("查询");
+
 
 		HBox hBox = new HBox();
 		hBox.getChildren().addAll(birthday,checkInDatePicker,submit);
 		hBox.setAlignment(Pos.CENTER);
 		hBox.setSpacing(10);
 		gridPane.add(hBox,0,0);
-//		gridPane.add(birthday,0,0);
-//		gridPane.setHalignment(birthday, HPos.CENTER);
-//		gridPane.add(checkInDatePicker,0,1);
-//		gridPane.add(submit,1,1);
-
 		vBox.getChildren().addAll(gridPane);
 		birthday.requestFocus();
 
 		submit.setOnAction(event -> {
+
+			GridPane showPane = new GridPane();
 			LocalDate date = checkInDatePicker.getValue();
 			String string = date.toString();
 //			System.out.println(string);
 			String[] strings = string.split("-");
 			Integer month = Integer.valueOf(strings[1]);
 			Integer day = Integer.valueOf(strings[2]);
-			GridPane showPane = showQuery(month,day);
+			showPane = showQuery(month,day);
 			showPane.setMaxWidth(500);
 			gridPane.add(showPane,0,4);
 		});
-		gridPane.setMaxSize(400,400);
+		gridPane.setMaxSize(450,450);
 		return gridPane;
 	}
 
@@ -110,6 +110,7 @@ public class XingzuoQuery extends Application {
 		Label desc = new Label();
 		desc.setText(Info.getDesc());
 		desc.setWrapText(true);
+		desc.setFont(new Font("Cambria",16));
 		Image image = new Image(Info.getUrl());
 		ImageView imageView = new ImageView();
 		imageView.setFitHeight(200);
