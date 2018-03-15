@@ -30,6 +30,10 @@ public class XingzuoInfo {
 		}
 	}
 
+	public int getNumber(){
+		return number;
+	}
+
 	public int[] getStartDay() {
 		return startDay;
 	}

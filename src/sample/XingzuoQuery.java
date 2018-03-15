@@ -30,6 +30,7 @@ public class XingzuoQuery extends Application {
 	Label desc = new Label();
 	ImageView imageView = new ImageView();
 	Image image;
+	int number = 0;
 
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.US);
@@ -46,7 +47,7 @@ public class XingzuoQuery extends Application {
 
 	public GridPane initUI() {
 		//DatePicker
-		VBox vBox = new VBox(20);
+		VBox vBox = new VBox(5);
 		vBox.setStyle("-fx-padding: 10;");
 		checkInDatePicker = new DatePicker(LocalDate.of(1990,01,01));
 		checkInDatePicker.setShowWeekNumbers(false);
@@ -75,22 +76,22 @@ public class XingzuoQuery extends Application {
 		//UI
 		Label birthday = new Label("您的生日是(选择/手动输入):");
 		Button submit = new Button();
+		Button pair = new Button();
 		submit.setText("查询");
+		pair.setText("星座配对");
 		GridPane gridPane = new GridPane();
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
 
-
-		HBox hBox = new HBox();
-		hBox.getChildren().addAll(birthday,checkInDatePicker,submit);
-		hBox.setAlignment(Pos.CENTER);
-		hBox.setSpacing(10);
-		gridPane.add(hBox,0,0);
+		vBox.getChildren().addAll(birthday,checkInDatePicker,submit);
+		vBox.setAlignment(Pos.CENTER);
+		vBox.setSpacing(10);
+		gridPane.add(vBox,0,0);
 		birthday.requestFocus();
 
-		gridPane.add(desc,0,4);
-		gridPane.add(imageView,1,4);
+		gridPane.add(desc,0,1);
+		gridPane.add(imageView,1,1);
 
 		submit.setOnAction(event -> {
 			GridPane showPane = new GridPane();
@@ -103,17 +104,23 @@ public class XingzuoQuery extends Application {
 
 			XingzuoInfo Info = new XingzuoInfo(month,day);
 //			desc = new Label();
+			number = Info.getNumber();
+			System.out.println(number);
 			desc.setText(Info.getDesc());
 			desc.setWrapText(true);
-			desc.setFont(new Font("Cambria",16));
+			desc.setFont(new Font("Tahoma",14));
 			image = new Image(Info.getUrl());
 //			ImageView imageView = new ImageView();
 			imageView.setFitHeight(200);
 			imageView.setFitWidth(200);
 			imageView.setImage(image);
 		});
-		gridPane.setMaxSize(450,450);
+		gridPane.setMaxSize(500,500);
 		return gridPane;
+	}
+
+	public int getNumber(){
+		return number;
 	}
 
 }
