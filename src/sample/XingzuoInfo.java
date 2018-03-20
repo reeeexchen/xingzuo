@@ -53,7 +53,7 @@ public class XingzuoInfo {
 	public String getDesc() {
 		StringBuilder result = new StringBuilder();
 		try {
-			String path = "src/text/" + number + ".txt";
+			String path = "src/text/check/" + number + ".txt";
 //			System.out.println(path);
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			desc = null;

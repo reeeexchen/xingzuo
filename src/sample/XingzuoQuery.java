@@ -41,15 +41,15 @@ public class XingzuoQuery extends Application {
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
 		stage.setTitle("星座查询器");
-		initUI();
+		initUI("");
 		stage.show();
 	}
 
-	public GridPane initUI() {
+	public GridPane initUI(String gender) {
 		//DatePicker
 		VBox vBox = new VBox(5);
 		vBox.setStyle("-fx-padding: 10;");
-		checkInDatePicker = new DatePicker(LocalDate.of(1990,01,01));
+		checkInDatePicker = new DatePicker();
 		checkInDatePicker.setShowWeekNumbers(false);
 		StringConverter converter = new StringConverter<LocalDate>() {
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dtf);
@@ -74,7 +74,7 @@ public class XingzuoQuery extends Application {
 		checkInDatePicker.setPromptText(dtf.toLowerCase());
 
 		//UI
-		Label birthday = new Label("您的生日是(选择/手动输入):");
+		Label birthday = new Label(gender + "的生日是(选择/手动输入):");
 		Button submit = new Button();
 		Button pair = new Button();
 		submit.setText("查询");
@@ -115,12 +115,17 @@ public class XingzuoQuery extends Application {
 			imageView.setFitWidth(200);
 			imageView.setImage(image);
 		});
-		gridPane.setMaxSize(500,500);
+		gridPane.setMaxSize(400,400);
 		return gridPane;
 	}
 
 	public int getNumber(){
 		return number;
+	}
+
+	public String getName(int idx){
+		String []astro = {"水瓶","双鱼","白羊","金牛","双子","巨蟹","狮子","处女","天秤","天蝎","射手","摩羯"};
+		return astro[idx];
 	}
 
 }
